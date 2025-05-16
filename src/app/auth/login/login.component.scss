@@ -1,0 +1,41 @@
+
+
+// Fallback pour les navigateurs qui ne supportent pas Playfair Display
+@supports not (font-family: 'Playfair Display') {
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+}
+
+.input-focus {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+  }
+}
+
+.error-message {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.museum-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 253, 245, 0.92);
+
+  // Fallback pour anciens navigateurs ne supportant pas backdrop-filter
+  @supports not (backdrop-filter: blur(5px)) {
+    background-color: #fffdf5;
+  }
+}

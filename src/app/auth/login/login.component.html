@@ -1,1 +1,117 @@
-<p>login works!</p>
+<div class="min-h-screen flex items-center justify-center p-4">
+  <div
+    class="museum-card rounded-lg overflow-hidden border border-[#d4af37] max-w-md w-full p-8 mx-auto"
+    style="font-family: 'Playfair Display', Georgia, 'Times New Roman', Times, serif; background-color: rgba(255, 253, 245, 0.92); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); backdrop-filter: blur(5px);"
+  >
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-semibold text-[#d4af37] mb-2"><i class="fas fa-landmark mr-2"></i> Musée Imaginaire</h1>
+      <p class="text-gray-700">Accédez à votre collection personnelle</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-6" #loginForm="ngForm" novalidate>
+      <div *ngIf="errors.length" class="mb-4">
+        <p
+          *ngFor="let error of errors"
+          class="error-message text-red-600 text-sm mb-2 flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          {{ error }}
+        </p>
+      </div>
+
+      <div>
+        <label
+          for="email"
+          class="block text-sm font-medium text-gray-700 mb-1"
+          ><i class="fas fa-envelope mr-1 text-[#8c7b5d]"></i>
+          Adresse email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded input-focus bg-white transition duration-200"
+          placeholder="votre@email.com"
+        />
+      </div>
+
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-gray-700 mb-1"
+          ><i class="fas fa-lock mr-1 text-[#8c7b5d]"></i>Mot de passe</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          minlength="6"
+          class="w-full px-4 py-2 border border-gray-300 rounded input-focus bg-white transition duration-200"
+          placeholder="••••••••"
+        />
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input
+            id="remember-me"
+            name="rememberMe"
+            type="checkbox"
+            [(ngModel)]="rememberMe"
+            class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
+          />
+          <label for="remember-me" class="ml-2 block text-sm text-gray-700"
+            >Se souvenir de moi</label
+          >
+        </div>
+
+        <div class="text-sm">
+          <a
+            href="#"
+            class="font-medium text-yellow-600 hover:text-yellow-700"
+            >Mot de passe oublié?</a
+          >
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-200"
+        >
+          Se connecter
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-6 text-center text-sm">
+      <p class="text-gray-700">
+        Pas encore membre?
+        <a href="auth/register" class="font-medium text-yellow-600 hover:text-yellow-700"
+          >Créer un compte</a
+        >
+      </p>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+      <p class="text-xs text-gray-500">© 2025 Musée Imaginaire. Tous droits réservés.</p>
+    </div>
+  </div>
+</div>

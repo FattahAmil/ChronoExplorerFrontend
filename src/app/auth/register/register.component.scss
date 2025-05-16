@@ -1,0 +1,40 @@
+.vintage-card {
+    background-color: rgba(255, 253, 248, 0.95);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #d4c9a6;
+    backdrop-filter: blur(4px);
+  }
+  
+  .vintage-input {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid #d4c9a6;
+    transition: all 0.3s ease;
+  }
+  
+  .vintage-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(180, 150, 100, 0.3);
+    border-color: #b49664;
+  }
+  
+  .vintage-btn {
+    background-color: #8c7b5d;
+    color: white;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+  
+  .vintage-btn:hover {
+    background-color: #6b5d45;
+  }
+  
+  .password-toggle {
+    color: #8c7b5d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .password-toggle:hover {
+    color: #6b5d45;
+  }
+  

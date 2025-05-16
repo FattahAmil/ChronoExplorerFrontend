@@ -1,1 +1,89 @@
-<p>register works!</p>
+<div class="min-h-screen flex items-center justify-center p-4">
+    <div class="vintage-card rounded-lg p-8 w-full max-w-md mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-semibold mb-2 text-[#6b5d45]">
+                <i class="fas fa-landmark mr-2"></i> Musée Imaginaire
+            </h1>
+            <p class="text-gray-600 italic">Rejoignez notre communauté d'art et d'histoire</p>
+        </div>
+
+        <form #registerForm="ngForm" (ngSubmit)="submitForm(registerForm)" novalidate class="space-y-4">
+            <div *ngIf="errorMessages.length > 0" class="bg-red-50 border-l-4 border-red-500 p-3 mb-4">
+                <div *ngFor="let error of errorMessages">
+                    <p class="text-red-600 text-sm">{{ error }}</p>
+                </div>
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-envelope mr-1 text-[#8c7b5d]"></i> Email
+                </label>
+                <input type="email" id="email" name="email" [(ngModel)]="user.email" required 
+                    class="w-full px-3 py-2 rounded vintage-input text-sm"
+                    placeholder="votre@email.com">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-lock mr-1 text-[#8c7b5d]"></i> Mot de passe
+                </label>
+                <div class="relative">
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" name="password" [(ngModel)]="user.password" required 
+                        class="w-full px-3 py-2 rounded vintage-input text-sm pr-8"
+                        placeholder="••••••••" minlength="6">
+                    <span class="absolute right-3 top-2.5 password-toggle" (click)="togglePassword()">
+                        <i class="fas" [ngClass]="{'fa-eye': showPassword, 'fa-eye-slash': !showPassword}"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-lock mr-1 text-[#8c7b5d]"></i> Confirmer le mot de passe
+                </label>
+                <div class="relative">
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" required 
+                        class="w-full px-3 py-2 rounded vintage-input text-sm pr-8"
+                        placeholder="••••••••">
+                    <span class="absolute right-3 top-2.5 password-toggle" (click)="toggleConfirmPassword()">
+                        <i class="fas" [ngClass]="{'fa-eye': showConfirmPassword, 'fa-eye-slash': !showConfirmPassword}"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-center mt-2">
+                <input type="checkbox" id="terms" name="terms" [(ngModel)]="user.terms" required
+                    class="h-4 w-4 text-[#8c7b5d] focus:ring-[#8c7b5d] border-gray-300 rounded">
+                <label for="terms" class="ml-2 block text-xs text-gray-600">
+                    J'accepte les <a href="#" class="text-[#8c7b5d] hover:underline">conditions d'utilisation</a>
+                </label>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" class="w-full py-2 px-4 rounded-md text-sm font-medium vintage-btn"
+                        [disabled]="registerForm.invalid || loading">
+                    <span *ngIf="!loading">
+                        <i class="fas fa-user-plus mr-2"></i> Créer un compte
+                    </span>
+                    <span *ngIf="loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i> Création en cours...
+                    </span>
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center text-sm">
+            <p class="text-gray-600">Déjà membre? 
+                <a href="auth/login" class="font-medium text-[#8c7b5d] hover:underline">
+                    <i class="fas fa-sign-in-alt mr-1"></i> Se connecter
+                </a>
+            </p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-gray-200 text-center">
+            <p class="text-xs text-gray-500">
+                <i class="fas fa-copyright mr-1"></i> 2025 Musée Imaginaire. Tous droits réservés.
+            </p>
+        </div>
+    </div>
+</div>
