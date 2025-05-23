@@ -1,0 +1,310 @@
+// Optional: Define some variables
+:host {
+  --primary-text-color: #333;
+  --secondary-text-color: #555;
+  --background-color: #f4f4f4;
+  --card-background-color: #fff;
+  --border-color: #ddd;
+  --accent-color: #007bff; // Example accent
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --overlay-background: rgba(0, 0, 0, 0.8);
+}
+
+// General styles
+.timeline-container {
+  font-family: Arial, sans-serif;
+  color: var(--primary-text-color);
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Ensure it takes at least full viewport height
+  box-sizing: border-box;
+}
+
+// 2. Chronological Bar (.chronological-bar)
+.chronological-bar {
+  width: 100%;
+  height: 30px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0; // Prevent shrinking
+
+  .marker {
+    width: 2px;
+    height: 15px;
+    background-color: var(--secondary-text-color);
+  }
+}
+
+// 3. Periods Container (.periods-container) and Period Items (.period-item)
+.periods-container {
+  display: flex;
+  flex-wrap: wrap; // Mobile: allow wrapping
+  justify-content: center; // Mobile: center items
+  padding: 10px 5px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--card-background-color); // Give it a slight background
+  flex-shrink: 0; // Prevent shrinking
+}
+
+.period-item {
+  padding: 8px 15px;
+  margin: 5px;
+  border-radius: 15px;
+  color: #000; // Default to black for better contrast on varied backgrounds
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9em;
+  box-shadow: 0 1px 3px var(--shadow-color);
+  // Background color is set dynamically via [style.backgroundColor]
+
+  h3 {
+    margin: 0;
+    font-size: inherit;
+    // Consider text-shadow for very problematic background colors:
+    // text-shadow: 0px 0px 3px rgba(255,255,255,0.7);
+  }
+}
+
+// 4. Events Container (.events-container) and Event Items (.event-item)
+// Mobile-first: Events stack vertically
+.events-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0;
+  overflow-y: auto; // Vertical scroll for mobile
+  overflow-x: hidden;
+  flex-grow: 1; // Allows this container to take available space and scroll
+  width: 100%;
+}
+
+.event-item {
+  background-color: var(--card-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px;
+  width: 90%;
+  max-width: 480px; // Max width for cards on mobile
+  box-shadow: 0 2px 4px var(--shadow-color);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+  .event-image {
+    max-width: 100%;
+    height: auto; // Maintain aspect ratio
+    border-radius: 4px;
+    margin-bottom: 10px;
+    object-fit: cover; // Ensures image covers the area if specific dimensions are set
+  }
+
+  .event-info {
+    // Container for text content
+  }
+
+  .event-date {
+    font-size: 0.85em;
+    color: var(--secondary-text-color);
+    margin-bottom: 5px;
+  }
+
+  .event-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--accent-color);
+  }
+
+  .event-summary {
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+}
+
+// Desktop Styles - For main layout changes
+@media (min-width: 768px) {
+  .periods-container {
+    flex-wrap: nowrap; // Periods in a single row on desktop
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 10px;
+  }
+
+  .period-item {
+    margin: 0 8px;
+    flex-shrink: 0; // Prevent shrinking in flex row
+  }
+
+  .events-container {
+    flex-direction: row; // Horizontal layout for events on desktop
+    overflow-x: auto; // Horizontal scroll
+    overflow-y: hidden; // Hide vertical scrollbar if events are not too tall
+    padding: 20px; // More padding for desktop view
+    align-items: flex-start; // Align cards to the top
+    // Consider a specific height for the events area on desktop
+    // max-height: 500px; // Example: limits height and makes it scrollable if content exceeds
+  }
+
+  .event-item {
+    flex: 0 0 auto; // Don't shrink, don't grow, base size on width
+    width: 300px; // Fixed width for cards on desktop
+    margin: 0 10px; // Horizontal margin between cards
+    // height: auto; // Ensure height adjusts to content, or set a fixed height if desired
+  }
+}
+
+// 5. Detail View (.event-detail-view)
+.event-detail-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
+  pointer-events: none; // Initially not interactive
+
+  // Class to show the modal (applied by Angular e.g. [class.visible]="selectedEvent")
+  &.visible { // This class should be toggled by the component's TS
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  .detail-content-area {
+    background-color: var(--card-background-color);
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%; // Responsive width for mobile
+    max-width: 700px; // Max width for desktop
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative; // For close button positioning
+
+    @media (min-width: 768px) {
+      padding: 30px; // More padding on desktop
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--accent-color);
+      font-size: 1.6em;
+      margin-bottom: 10px;
+      @media (min-width: 768px) {
+        font-size: 1.9em;
+      }
+    }
+
+    .event-detail-date {
+      font-size: 0.9em;
+      color: var(--secondary-text-color);
+      margin-bottom: 15px;
+    }
+
+    .event-detail-description {
+      line-height: 1.6;
+      margin-bottom: 20px;
+      font-size: 1em;
+    }
+
+    .sources-section, .media-section {
+      margin-top: 20px;
+      margin-bottom: 15px;
+      h4 {
+        font-size: 1.1em;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 5px;
+        color: var(--primary-text-color);
+      }
+      ul {
+        list-style: disc;
+        padding-left: 20px;
+        li {
+          margin-bottom: 5px;
+          a {
+            color: var(--accent-color);
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+
+    .media-item {
+      margin-bottom: 15px;
+      text-align: center; // Center media items like images/videos
+      img, video, audio {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 5px auto; // Center block elements
+        border-radius: 4px;
+      }
+      video { max-height: 400px; } // Cap video height
+      .media-item-description {
+        font-size: 0.85em;
+        color: var(--secondary-text-color);
+        text-align: center;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 2em; // Larger for easier clicking
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--secondary-text-color);
+    padding: 5px;
+    line-height: 1;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--primary-text-color);
+    }
+
+    @media (min-width: 768px) {
+      top: 15px;
+      right: 15px;
+    }
+  }
+}
+
+// 6. Thematic Grouping (Visual Cues - Optional Enhancement)
+// Example: Add a left border color for specific groups
+// .event-item.event-group-g1 { border-left: 4px solid #4CAF50; } // Example green
+// .event-item.event-group-g2 { border-left: 4px solid #FFC107; } // Example amber
+// To use these, the component's TS/HTML would need to add classes like 'event-group-g1' to event items.
+
+// Accessibility: Ensure text contrast on period items is managed
+// If background colors for periods are very diverse, a JavaScript solution
+// to dynamically set light/dark text might be needed. For now, we assume
+// reasonable contrast or that users will pick good background colors.
+// The `color: #000;` on `.period-item h3` is a fallback.
+```
