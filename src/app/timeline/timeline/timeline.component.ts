@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Added
 import { TimelineService } from '../timeline.service';
 import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '../timeline.model';
 
 @Component({
   selector: 'app-timeline',
+  standalone: true, // Added
+  imports: [CommonModule], // Added
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss'] // Corrected to styleUrls and array
+  styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
   periods: HistoricalPeriod[] = [];

@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimelineComponent } from './timeline/timeline.component'; // Added import
+// Removed import for TimelineComponent as it's now standalone
 
 import { TimelineRoutingModule } from './timeline-routing.module';
 
 
 @NgModule({
   declarations: [
-    TimelineComponent // Added component to declarations
+    // TimelineComponent removed from declarations
   ],
   imports: [
     CommonModule,
     TimelineRoutingModule
+    // If TimelineComponent were used in templates within this module (unlikely for routed components),
+    // it would be imported here: TimelineComponent
   ],
   exports: [
-    TimelineComponent // Added component to exports
+    // TimelineComponent removed from exports
   ]
 })
 export class TimelineModule { }
