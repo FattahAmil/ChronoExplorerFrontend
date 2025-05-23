@@ -1,1 +1,64 @@
-<p>timeline works!</p>
+<div class="timeline-container">
+
+  <!-- Chronological Bar (Placeholder) -->
+  <div class="chronological-bar">
+    <!-- Placeholder markers if desired -->
+    <div class="marker"></div>
+    <div class="marker"></div>
+    <div class="marker"></div>
+  </div>
+
+  <!-- Periods Display -->
+  <div class="periods-container">
+    <div class="period-item" *ngFor="let period of periods" [style.backgroundColor]="period.color">
+      <h3>{{ period.name }} ({{ period.startDate | date:'yyyy' }} - {{ period.endDate | date:'yyyy' }})</h3>
+    </div>
+  </div>
+
+  <!-- Events Display -->
+  <div class="events-container">
+    <div class="event-item" *ngFor="let event of events" (click)="selectEvent(event)">
+      <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title" class="event-image">
+      <div class="event-info">
+        <p class="event-date">{{ event.date | date:'mediumDate' }}</p> <!-- Using mediumDate as per example -->
+        <h4 class="event-title">{{ event.title }}</h4>
+        <p class="event-summary">{{ event.summary }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thematic Grouping: No explicit rendering in this step -->
+
+  <!-- Detail View (Conditional Display) -->
+  <div class="event-detail-view" *ngIf="selectedEvent">
+    <button (click)="clearSelectedEvent()" class="close-button">Close</button>
+    <h2>{{ selectedEvent.title }}</h2>
+    <p class="event-detail-date">{{ selectedEvent.date | date:'fullDate' }}</p> <!-- Using fullDate for more detail -->
+    <p class="event-detail-description">{{ selectedEvent.detailedDescription }}</p>
+
+    <div *ngIf="selectedEvent.sources && selectedEvent.sources.length > 0" class="sources-section">
+      <h4>Sources:</h4>
+      <ul>
+        <li *ngFor="let source of selectedEvent.sources">
+          <a *ngIf="source.url" [href]="source.url" target="_blank">{{ source.name }}</a>
+          <span *ngIf="!source.url">{{ source.name }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="selectedEvent.media && selectedEvent.media.length > 0" class="media-section">
+      <h4>Media:</h4>
+      <div *ngFor="let mediaItem of selectedEvent.media" class="media-item">
+        <img *ngIf="mediaItem.type === 'image'" [src]="mediaItem.url" [alt]="mediaItem.description || selectedEvent.title" style="max-width: 200px; margin: 5px;">
+        <video *ngIf="mediaItem.type === 'video'" controls [src]="mediaItem.url" style="max-width: 300px; margin: 5px;">
+          Your browser does not support the video tag.
+        </video>
+        <audio *ngIf="mediaItem.type === 'audio'" controls [src]="mediaItem.url" style="margin: 5px;">
+          Your browser does not support the audio element.
+        </audio>
+        <p *ngIf="mediaItem.description" class="media-item-description">{{ mediaItem.description }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>
