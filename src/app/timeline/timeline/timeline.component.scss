@@ -204,38 +204,7 @@
   position: relative; // Confirmed: Needed for absolute positioning of scroll indicator
 }
 
-// New Central Track and Dot Scroll Indicator Styles (Desktop)
-.central-timeline-track-container {
-  display: none; // Default hidden (mobile)
-
-  @media (min-width: 768px) { // Show only on desktop
-    display: block;
-    width: 100%; // Takes width of its containing block in normal flow
-    margin-top: 20px; // Space after periods
-    margin-bottom: 20px; // Space before events or filter info
-    // No absolute positioning needed now
-  }
-}
-
-.central-timeline-track {
-  width: 100%; // Full width of its container
-  height: 2px;
-  background-color: var(--border-color);
-  position: relative; // Dot is positioned relative to this track
-}
-
-.central-timeline-dot {
-  position: absolute;
-  top: 50%;
-  width: 10px; // Adjusted from 12px for a slightly smaller dot
-  height: 10px; // Adjusted from 12px
-  background-color: var(--accent-color-gold);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  left: 0%; // Initial position
-  transition: left 0.05s linear;
-}
-// End of New Central Track and Dot Styles
+// Removed Central Track and Dot Scroll Indicator Styles
 
 .no-events-message {
   text-align: center;
@@ -251,21 +220,22 @@
 
 .event-item {
   font-family: var(--primary-font);
-  background-color: var(--card-background-color);
-  border: 1px solid var(--border-color); // Muted gold/brown border
-  border-radius: 5px; // Consistent with period items
-  padding: 20px; // More padding
-  margin: 15px; // More margin
+  // background-color: var(--card-background-color); // Original, will be overridden by debug
+  border: 1px solid var(--border-color); // Original, will be overridden by debug
+  border-radius: 5px; 
+  padding: 20px; 
+  margin: 15px; 
   width: 90%;
   max-width: 520px;
   box-shadow: 0 2px 5px var(--shadow-color);
   cursor: pointer;
-  position: relative; // Keep for transforms, z-index likely not needed anymore for this specific interaction
+  position: relative; 
   // z-index: 2; // Removed as track is no longer behind
-  background-color: var(--card-background-color); // Ensure this is still opaque
+  // background-color: var(--card-background-color); // Ensure this is still opaque - Original, will be overridden by debug
+  
   // Initial state for IntersectionObserver animation
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 0; 
+  transform: translateY(40px); 
   transition: opacity 0.5s ease-out, // Opacity with a standard ease
               transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), // Transform with more bounce
               box-shadow 0.2s ease-in-out; // Keep existing shadow transition
@@ -273,46 +243,45 @@
   // Hover state - should still work over the reveal
   &:hover {
     box-shadow: 0 4px 10px var(--shadow-color);
-    // If translateY is part of the reveal, hover should ideally not fight it,
-    // but a slight lift combined with scale is usually fine.
-    // The reveal sets translateY(0), so this hover will apply after it's in view.
     transform: translateY(-5px) scale(1.03);
   }
 
   // Visible state for IntersectionObserver
   &.in-view {
-    opacity: 1;
-    transform: translateY(0);
+    // opacity: 1; // This would re-enable the reveal if base opacity was 0
+    // transform: translateY(0); // This would re-enable the reveal if base transform was different
   }
 
   .event-image {
     max-width: 100%;
     height: auto;
-    border-radius: 3px; // Subtler radius
-    margin-bottom: 15px; // More space below image
+    border-radius: 3px; 
+    margin-bottom: 15px; 
     object-fit: cover;
-    border: 1px solid var(--border-color); // Border around image
-    transition: transform 0.3s ease-out; // Add this for smooth zoom
+    // border: 1px solid var(--border-color); // Original, will be overridden by debug
+    transition: transform 0.3s ease-out; 
   }
 
   .event-date {
-    font-size: 0.9em; // Playfair might need adjustment
-    color: var(--secondary-text-color); // Readable muted brown
-    margin-bottom: 8px;
-    font-style: italic; // Classic touch
+    // font-size: 0.9em; // Original, will be overridden by debug
+    // color: var(--secondary-text-color); // Original, will be overridden by debug
+    margin-bottom: 8px; 
+    // font-style: italic; // Original, will be overridden by debug
   }
 
   .event-title {
-    font-size: 1.4em; // Larger for Playfair
-    font-weight: bold; // Ensure it's bold
-    margin-bottom: 10px;
-    color: var(--event-title-color); // Dark brown title
+    // font-size: 1.4em; // Original, will be overridden by debug
+    // font-weight: bold; // Original, will be overridden by debug
+    margin-bottom: 10px; 
+    // color: var(--event-title-color); // Original, will be overridden by debug
   }
 
   .event-summary {
-    font-size: 1em; // Playfair is legible
-    line-height: 1.6; // Good for serif fonts
+    // font-size: 1em; // Original, will be overridden by debug
+    // font-size: 1em; // Original, will be overridden by debug
+    // line-height: 1.6; // Original, will be overridden by debug
   }
+  // Debug styles removed
 }
 
 // Desktop Styles
@@ -338,16 +307,20 @@
     align-items: flex-start;
   }
 
-  .event-item {
+  .event-item { // This is a nested .event-item for desktop, debug styles won't apply here unless also added
     flex: 0 0 auto;
-    width: 320px; // Adjusted width
-    margin: 0 15px; // Adjusted margin
+    width: 320px; // Adjusted for desktop
+    margin: 0 15px; // Adjusted for desktop
     padding: 25px; // More padding for desktop cards
-    .event-title {
-      font-size: 1.3em; // Adjust if needed
+    // To apply debug styles here too, they'd need to be duplicated or a global debug class used.
+    // For now, focusing on the primary .event-item block.
+
+    .event-title { // These are more specific, so they will override the base .event-item .event-title debug styles
+      font-size: 1.3em; // Will be overridden by debug if !important is used
+      font-weight: bold; // Will be overridden by debug if !important is used
     }
     .event-summary {
-      font-size: 0.95em; // Slightly smaller summary on cards
+      font-size: 0.95em; // Will be overridden by debug if !important is used
     }
   }
 }
