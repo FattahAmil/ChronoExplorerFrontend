@@ -32,6 +32,13 @@
 
   <!-- Events Display -->
   <div #eventsContainerRef class="events-container"> <!-- Added #eventsContainerRef -->
+    <!-- New Central Track and Dot Scroll Indicator -->
+    <div class="central-timeline-track-container">
+      <div class="central-timeline-track">
+        <div #scrollDotRef class="central-timeline-dot"></div> <!-- Added #scrollDotRef -->
+      </div>
+    </div>
+
     <div #eventItemRef class="event-item" *ngFor="let event of filteredEvents" (click)="selectEvent(event)">
       <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title" class="event-image">
       <div class="event-info">
@@ -44,13 +51,7 @@
     <div *ngIf="filteredEvents.length === 0 && activePeriodName" class="no-events-message">
         <p>No events found for {{ activePeriodName }}.</p>
     </div>
-
-    <!-- Scroll Indicator for Desktop -->
-    <div class="scroll-indicator-track-wrapper"> <!-- Wrapper for positioning -->
-      <div class="scroll-indicator-track">
-        <div #scrollThumbRef class="scroll-indicator-thumb"></div> <!-- Added #scrollThumbRef -->
-      </div>
-    </div>
+    <!-- Removed Scroll Indicator for Desktop -->
   </div>
 
   <!-- Thematic Grouping: No explicit rendering in this step -->
