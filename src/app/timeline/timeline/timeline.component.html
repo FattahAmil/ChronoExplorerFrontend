@@ -19,6 +19,11 @@
     </div>
   </div>
 
+<!-- Filter Progress Bar -->
+<div class="filter-progress-track" *ngIf="isFiltering">
+  <div class="filter-progress-bar" [style.width]="filterProgressBarWidth + '%'"></div> <!-- Bind width to a new property -->
+</div>
+
   <!-- Active Filter Information -->
   <div class="filter-info-container" *ngIf="activePeriodName">
     <h2>Events for: {{ activePeriodName }}</h2>

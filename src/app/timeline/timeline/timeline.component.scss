@@ -171,6 +171,26 @@
   }
 }
 
+// Filter Progress Bar Styles
+.filter-progress-track {
+  height: 6px; // Slightly taller for better visibility
+  background-color: #e0e0e0; // Light gray track
+  width: 100%; // Full width of its container
+  margin-top: 8px; // Space from periods
+  margin-bottom: 15px; // Space before events or filter info
+  border-radius: 3px;
+  overflow: hidden; // Ensures inner bar respects border-radius
+  // This track itself is shown/hidden by *ngIf="isFiltering" in the HTML
+}
+
+.filter-progress-bar {
+  height: 100%;
+  background-color: var(--accent-color-gold); // Use theme's accent color
+  width: 0%; // Initial width, will be set by [style.width] binding
+  border-radius: 3px;
+  transition: width 0.4s ease-out; // CSS transition for the width change
+}
+
 // 4. Events Container (.events-container) and Event Items (.event-item)
 .events-container {
   display: flex;
