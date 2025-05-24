@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { trigger, transition, query, style, stagger, animate } from '@angular/animations'; // Added
 import { TimelineService } from '../timeline.service';
 import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '../timeline.model';
 
@@ -8,7 +9,19 @@ import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '
   standalone: true,
   imports: [CommonModule],
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss']
+  styleUrls: ['./timeline.component.scss'],
+  animations: [ // Added
+    trigger('eventListAnimation', [
+      transition('* => *', [ // Animate on any state change of the list
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger(100, [ // Stagger delay of 100ms between items
+            animate('0.4s ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          ])
+        ], { optional: true }) // optional: true if :enter might not find elements (e.g. empty list)
+      ])
+    ])
+  ]
 })
 export class TimelineComponent implements OnInit {
   periods: HistoricalPeriod[] = [];
