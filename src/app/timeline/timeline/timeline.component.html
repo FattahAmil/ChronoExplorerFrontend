@@ -1,4 +1,4 @@
-<div class="timeline-container">
+<div class="timeline-container" [style.backgroundColor]="activeEraBackground">
 
   <!-- Chronological Bar (Placeholder) -->
   <div class="chronological-bar">
@@ -26,8 +26,8 @@
   </div>
 
   <!-- Events Display -->
-  <div class="events-container" [@eventListAnimation]="filteredEvents.length">
-    <div class="event-item" *ngFor="let event of filteredEvents" (click)="selectEvent(event)">
+  <div class="events-container">
+    <div #eventItemRef class="event-item" *ngFor="let event of filteredEvents" (click)="selectEvent(event)">
       <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title" class="event-image">
       <div class="event-info">
         <p class="event-date">{{ event.date | date:'mediumDate' }}</p>
@@ -45,6 +45,11 @@
 
   <!-- Detail View (Conditional Display) -->
   <div class="event-detail-view" *ngIf="selectedEvent" [class.visible]="selectedEvent">
+    <!-- Previous Button (on the left side of the overlay) -->
+    <button *ngIf="hasPreviousEvent" (click)="selectPreviousEvent()" class="modal-nav-button prev">
+      &#x2039; <!-- Left-pointing angle bracket -->
+    </button>
+
     <div class="detail-content-area"> <!-- This div wraps all content including the close button -->
       <button (click)="clearSelectedEvent()" class="close-button">×</button> <!-- Changed text to '×' -->
 
@@ -80,6 +85,11 @@
         </div>
       </div>
     </div> <!-- End of detail-content-area -->
+
+    <!-- Next Button (on the right side of the overlay) -->
+    <button *ngIf="hasNextEvent" (click)="selectNextEvent()" class="modal-nav-button next">
+      &#x203A; <!-- Right-pointing angle bracket -->
+    </button>
   </div>
 
 </div>
