@@ -19,6 +19,13 @@
     </div>
   </div>
 
+<!-- NEW POSITION for Scroll Indicator -->
+<div class="central-timeline-track-container">
+  <div class="central-timeline-track">
+    <div #scrollDotRef class="central-timeline-dot"></div>
+  </div>
+</div>
+
 <!-- Filter Progress Bar -->
 <div class="filter-progress-track" *ngIf="isFiltering">
   <div class="filter-progress-bar" [style.width]="filterProgressBarWidth + '%'"></div> <!-- Bind width to a new property -->
@@ -32,13 +39,7 @@
 
   <!-- Events Display -->
   <div #eventsContainerRef class="events-container"> <!-- Added #eventsContainerRef -->
-    <!-- New Central Track and Dot Scroll Indicator -->
-    <div class="central-timeline-track-container">
-      <div class="central-timeline-track">
-        <div #scrollDotRef class="central-timeline-dot"></div> <!-- Added #scrollDotRef -->
-      </div>
-    </div>
-
+    <!-- Note: The track container is NO LONGER the first child here -->
     <div #eventItemRef class="event-item" *ngFor="let event of filteredEvents" (click)="selectEvent(event)">
       <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title" class="event-image">
       <div class="event-info">
