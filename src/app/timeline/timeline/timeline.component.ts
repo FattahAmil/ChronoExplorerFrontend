@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, QueryList, ViewChildren, Inject, PLATFORM_ID } from '@angular/core'; // Updated imports
-import { CommonModule, isPlatformBrowser } from '@angular/common'; // Added isPlatformBrowser
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, QueryList, ViewChildren, Inject, PLATFORM_ID, ViewChild, Renderer2 } from '@angular/core'; // Updated imports
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 // Removed Angular Animation imports
 import { TimelineService } from '../timeline.service';
 import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '../timeline.model';
@@ -12,9 +12,12 @@ import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '
   styleUrls: ['./timeline.component.scss'],
   // Removed animations metadata
 })
-export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // Implemented interfaces
-  @ViewChildren('eventItemRef') eventItemRefs!: QueryList<ElementRef>; // Added ViewChildren
-  private observer!: IntersectionObserver; // Added observer property
+export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChildren('eventItemRef') eventItemRefs!: QueryList<ElementRef>;
+  @ViewChild('eventsContainerRef') eventsContainerRef!: ElementRef<HTMLDivElement>; // Added
+  @ViewChild('scrollThumbRef') scrollThumbRef!: ElementRef<HTMLDivElement>; // Added
+  private observer!: IntersectionObserver;
+  private scrollListenerFn!: () => void; // Added
 
   periods: HistoricalPeriod[] = [];
   events: HistoricalEvent[] = [];
@@ -33,7 +36,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // 
 
   constructor(
     private timelineService: TimelineService,
-    @Inject(PLATFORM_ID) private platformId: Object // Added PLATFORM_ID injection
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private renderer: Renderer2 // Added
   ) { }
 
   ngOnInit(): void {
@@ -50,11 +54,36 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // 
     if (isPlatformBrowser(this.platformId)) { // Guard added
       this.initObserver();
       // It's important that eventItemRefs.changes subscription is also guarded
-      if (this.eventItemRefs) { // Check if eventItemRefs is available
+      if (this.eventItemRefs) {
           this.eventItemRefs.changes.subscribe(() => {
-              this.disconnectObserver();
-              this.initObserver(); 
+              this.disconnectObserver(); // Existing IntersectionObserver cleanup
+              this.initObserver(); // Re-init IntersectionObserver
           });
+      }
+
+      // Scroll Indicator Logic (as per subtask description)
+      const eventsContainerEl = this.eventsContainerRef?.nativeElement;
+      const scrollThumbEl = this.scrollThumbRef?.nativeElement;
+
+      if (eventsContainerEl && scrollThumbEl) {
+        this.scrollListenerFn = this.renderer.listen(eventsContainerEl, 'scroll', () => {
+          const scrollableWidth = eventsContainerEl.scrollWidth - eventsContainerEl.clientWidth;
+          if (scrollableWidth > 0) {
+            const scrollPercentage = (eventsContainerEl.scrollLeft / scrollableWidth) * 100;
+            this.renderer.setStyle(scrollThumbEl, 'width', scrollPercentage + '%');
+          } else {
+            this.renderer.setStyle(scrollThumbEl, 'width', '0%'); // No scroll needed, hide/reset thumb
+          }
+        });
+        // Initial state of the thumb (optional, could be 0% if nothing is scrolled initially)
+        // For robustness, check initial scroll state:
+        const initialScrollableWidth = eventsContainerEl.scrollWidth - eventsContainerEl.clientWidth;
+        if (initialScrollableWidth > 0) {
+            const initialScrollPercentage = (eventsContainerEl.scrollLeft / initialScrollableWidth) * 100;
+            this.renderer.setStyle(scrollThumbEl, 'width', initialScrollPercentage + '%');
+        } else {
+            this.renderer.setStyle(scrollThumbEl, 'width', '0%');
+        }
       }
     }
   }
@@ -93,7 +122,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // 
   }
 
   ngOnDestroy(): void {
-    this.disconnectObserver();
+    this.disconnectObserver(); // Existing IntersectionObserver cleanup
+    if (this.scrollListenerFn && isPlatformBrowser(this.platformId)) { // Guard listener removal
+      this.scrollListenerFn(); // Remove the scroll event listener
+      // If window resize listener was added, remove it too
+      // window.removeEventListener('resize', updateThumbWidth); // Needs updateThumbWidth to be accessible
+    }
   }
 
   selectPeriod(period: HistoricalPeriod): void {

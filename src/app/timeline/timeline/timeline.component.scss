@@ -181,6 +181,40 @@
   overflow-x: hidden;
   flex-grow: 1;
   width: 100%;
+  position: relative; // Needed for absolute positioning of scroll indicator
+}
+
+// Scroll Indicator Styles (Desktop)
+.scroll-indicator-track-wrapper {
+  display: none; // Hidden by default (mobile)
+  @media (min-width: 768px) { // Show only on desktop
+    display: block;
+    position: absolute; // Position at the bottom of the events-container
+    bottom: 5px;      // Stick to bottom with a small offset
+    left: 0;
+    width: 100%;
+    padding: 0 20px; // Align with events-container padding if any (adjust if events-container padding changes)
+    box-sizing: border-box;
+    height: 10px;     // Height of the track area
+    z-index: 5;       // Ensure it's above event content if they overlap
+  }
+}
+
+.scroll-indicator-track {
+  width: 100%;
+  height: 4px; // Thickness of the track
+  background-color: rgba(0, 0, 0, 0.1); // Light track color
+  border-radius: 2px;
+  position: relative; 
+  margin-top: 3px; // Space from bottom edge or content
+}
+
+.scroll-indicator-thumb {
+  height: 100%; // Same thickness as track
+  background-color: var(--accent-color-gold); // Use a theme color
+  border-radius: 2px;
+  width: 0%; // Initial width, will be set by TS
+  transition: width 0.05s linear; // Smooth out width changes slightly
 }
 
 .no-events-message {
@@ -209,9 +243,9 @@
   // Initial state for IntersectionObserver animation
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              box-shadow 0.2s ease-in-out; // Keep existing shadow transition for hover
+  transition: opacity 0.5s ease-out, // Opacity with a standard ease
+              transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), // Transform with more bounce
+              box-shadow 0.2s ease-in-out; // Keep existing shadow transition
 
   // Hover state - should still work over the reveal
   &:hover {
@@ -235,6 +269,7 @@
     margin-bottom: 15px; // More space below image
     object-fit: cover;
     border: 1px solid var(--border-color); // Border around image
+    transition: transform 0.3s ease-out; // Add this for smooth zoom
   }
 
   .event-date {
