@@ -206,37 +206,34 @@
 
 // New Central Track and Dot Scroll Indicator Styles (Desktop)
 .central-timeline-track-container {
-  display: none; // Hidden by default (mobile)
+  display: none; // Default hidden (mobile)
 
-  @media (min-width: 768px) { // Show only on desktop where horizontal scroll is active
+  @media (min-width: 768px) { // Show only on desktop
     display: block;
-    position: absolute;
-    top: 50%; // Vertically center the track
-    left: 10px; // Start after a bit of padding
-    right: 10px; // End before a bit of padding
-    transform: translateY(-50%);
-    z-index: 1; // Behind event cards
-    pointer-events: none; // So it doesn't interfere with mouse events on cards
+    width: 100%; // Takes width of its containing block in normal flow
+    margin-top: 20px; // Space after periods
+    margin-bottom: 20px; // Space before events or filter info
+    // No absolute positioning needed now
   }
 }
 
 .central-timeline-track {
-  width: 100%;
+  width: 100%; // Full width of its container
   height: 2px;
-  background-color: var(--border-color); // Use a theme color (e.g., muted gold/brown)
-  position: relative; // For the dot to be positioned on
+  background-color: var(--border-color);
+  position: relative; // Dot is positioned relative to this track
 }
 
 .central-timeline-dot {
   position: absolute;
-  top: 50%; // Center dot on the track line
-  width: 10px; // Size of the dot
-  height: 10px; // Size of the dot
-  background-color: var(--accent-color-gold); // Use a theme accent color
+  top: 50%;
+  width: 10px; // Adjusted from 12px for a slightly smaller dot
+  height: 10px; // Adjusted from 12px
+  background-color: var(--accent-color-gold);
   border-radius: 50%;
-  transform: translate(-50%, -50%); // Center the dot element on its 'left' position
-  left: 0%; // Initial position, will be updated by TypeScript
-  transition: left 0.05s linear; // Smooth movement, adjust timing if needed
+  transform: translate(-50%, -50%);
+  left: 0%; // Initial position
+  transition: left 0.05s linear;
 }
 // End of New Central Track and Dot Styles
 
@@ -263,8 +260,9 @@
   max-width: 520px;
   box-shadow: 0 2px 5px var(--shadow-color);
   cursor: pointer;
-  position: relative; // Ensure it can have a z-index
-  z-index: 2;       // To be above the .central-timeline-track-container
+  position: relative; // Keep for transforms, z-index likely not needed anymore for this specific interaction
+  // z-index: 2; // Removed as track is no longer behind
+  background-color: var(--card-background-color); // Ensure this is still opaque
   // Initial state for IntersectionObserver animation
   opacity: 0;
   transform: translateY(40px);
