@@ -114,9 +114,9 @@
   font-family: var(--primary-font);
   background-color: var(--accent-color-gold);
   color: #fff; // White text on gold for contrast
-  border: 1px solid darken(var(--accent-color-gold), 10%); // SCSS darken function won't work directly with CSS var
-                                                        // Using a slightly darker fixed value or another var if available
-                                                        // For simplicity, let's assume a manual darker shade or same border
+  // SCSS darken function won't work directly with CSS var
+  // Using a slightly darker fixed value or another var if available
+  // For simplicity, let's assume a manual darker shade or same border
   border-color: #b89b2e; // Darker gold (manual alternative to SCSS darken)
   padding: 8px 15px;
   border-radius: 4px;
