@@ -238,97 +238,94 @@
   }
 }
 
-// 5. Detail View (.event-detail-view)
+// 5. Detail View (.event-detail-view) - MODERN STYLES
 .event-detail-view {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--overlay-background); // Brownish overlay
+  background-color: rgba(0, 0, 0, 0.7); // Darker overlay
+  backdrop-filter: blur(5px); // Optional blur
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 1000; // Ensure it's above other content
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.95); // Start slightly smaller for zoom-in effect
   transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
   pointer-events: none;
 
   &.visible {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1); // Zoom to full size
     pointer-events: auto;
   }
 
   .detail-content-area {
-    font-family: var(--primary-font);
-    background-color: var(--card-background-color); // Lighter parchment
-    padding: 25px;
-    border-radius: 5px; // Consistent radius
-    border: 1px solid var(--accent-color-gold); // Gold border
-    color: var(--primary-text-color); // Dark brown/charcoal text
-    width: 90%;
-    max-width: 750px; // Slightly wider for detail
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 5px 20px var(--shadow-color); // More prominent shadow
-    position: relative;
-
-    @media (min-width: 768px) {
-      padding: 35px; // More padding on desktop
-    }
+    font-family: 'Poppins', sans-serif; // New font
+    background-color: #ffffff; // Plain white
+    border: none; // Remove old border
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175); // Modern shadow
+    border-radius: 8px; // Rounded corners
+    padding: 2rem; // Scalable padding
+    width: 90%; // Responsive width
+    max-width: 650px; // Max width for readability
+    max-height: 85vh; // Max height to keep it within viewport
+    overflow-y: auto; // Scroll for content overflow
+    position: relative; // For absolute positioning of close button
 
     h2 {
-      margin-top: 0;
-      font-family: var(--primary-font);
-      color: var(--event-title-color); // Dark brown, consistent with event items
-      font-size: 2em; // Larger for Playfair
-      margin-bottom: 15px;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color); // Subtle separator
-      padding-bottom: 10px;
-      @media (min-width: 768px) {
-        font-size: 2.2em;
-      }
+      font-family: 'Poppins', sans-serif;
+      color: #333333; // Dark gray title
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-align: left; // Align left
+      border-bottom: 1px solid #eeeeee; // Light separator
+      padding-bottom: 0.75rem;
+      margin-top: 0; // Ensure no extra space at top
+      margin-bottom: 1.25rem;
     }
 
     .event-detail-date {
-      font-size: 1em;
-      color: var(--secondary-text-color);
-      margin-bottom: 20px;
-      text-align: center;
-      font-style: italic;
+      font-family: 'Poppins', sans-serif;
+      color: #666666; // Medium gray
+      font-size: 0.9rem;
+      text-align: left; // Align left
+      margin-bottom: 1.5rem;
+      font-style: normal; // Remove previous italic
     }
 
     .event-detail-description {
-      line-height: 1.7; // More leading for serif body
-      font-size: 1.05em; // Slightly larger body text
-      margin-bottom: 25px;
+      font-family: 'Poppins', sans-serif;
+      color: #555555; // Standard text color
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem; // Consistent margin
     }
 
     .sources-section, .media-section {
-      margin-top: 25px;
-      margin-bottom: 20px;
+      margin-top: 1.5rem; // Consistent margin
+      margin-bottom: 1.5rem;
       h4 {
-        font-family: var(--primary-font);
-        font-size: 1.3em; // Larger section headers
-        margin-bottom: 12px;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 8px;
-        color: var(--event-title-color); // Consistent dark brown
+        font-family: 'Poppins', sans-serif;
+        color: #444444;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-bottom: 1px solid #f0f0f0; // Lighter separator
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
       }
       ul {
-        list-style: square; // More classic list style
-        padding-left: 25px;
+        list-style: disc; // Standard disc
+        padding-left: 1.25rem; // Standard indent
         li {
-          margin-bottom: 8px;
+          margin-bottom: 0.5rem; // Spacing for list items
           a {
-            color: var(--accent-color-gold); // Gold links
+            color: #007bff; // Standard blue link
             text-decoration: none;
             &:hover {
               text-decoration: underline;
-              color: var(--event-title-color); // Darken on hover
             }
           }
         }
@@ -336,50 +333,45 @@
     }
 
     .media-item {
-      margin-bottom: 20px;
-      text-align: center;
+      margin-bottom: 1.5rem;
+      text-align: left; // Align media items left
       img, video, audio {
         max-width: 100%;
         height: auto;
         display: block;
-        margin: 0 auto 10px auto;
-        border-radius: 3px;
-        border: 1px solid var(--border-color); // Border around media
+        margin-bottom: 0.5rem; // Space below media
+        border-radius: 4px; // Slightly rounded corners for media
+        border: 1px solid #eeeeee; // Light border for media
       }
-      video { max-height: 400px; }
+      video { max-height: 350px; } // Adjusted max height
       .media-item-description {
-        font-size: 0.9em;
-        color: var(--secondary-text-color);
-        text-align: center;
-        margin-top: 8px;
-        font-style: italic;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.85rem;
+        color: #777777; // Lighter gray for description
+        text-align: left;
+        margin-top: 0.25rem;
+        font-style: normal; // Remove previous italic
       }
     }
   }
 
   .close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    font-family: 'Arial', sans-serif; // Clearer 'X'
+    font-size: 1.5rem;
+    color: #aaaaaa; // Light gray 'X'
+    font-weight: bold;
     background: transparent;
     border: none;
-    font-size: 1.8em; // Slightly smaller, more refined
-    font-weight: normal; // Playfair might not need bold for an 'X'
-    font-family: var(--primary-font); // Use the primary font for consistency
-    cursor: pointer;
-    color: var(--secondary-text-color); // Muted color
-    padding: 8px;
+    padding: 0.5rem;
     line-height: 1;
-    transition: color 0.2s ease, transform 0.2s ease;
+    position: absolute;
+    top: 1rem; // Position relative to content area padding
+    right: 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
 
     &:hover {
-      color: var(--accent-color-gold); // Gold on hover
-      transform: scale(1.1);
-    }
-
-    @media (min-width: 768px) {
-      top: 20px;
-      right: 20px;
+      color: #333333; // Darker on hover
     }
   }
 }
