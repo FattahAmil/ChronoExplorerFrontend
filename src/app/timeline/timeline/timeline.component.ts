@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, QueryList, ViewChildren } from '@angular/core'; // Updated imports
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, QueryList, ViewChildren, Inject, PLATFORM_ID } from '@angular/core'; // Updated imports
+import { CommonModule, isPlatformBrowser } from '@angular/common'; // Added isPlatformBrowser
 // Removed Angular Animation imports
 import { TimelineService } from '../timeline.service';
 import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '../timeline.model';
@@ -24,14 +24,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // 
   public selectedPeriodId: string | number | null = null;
   public activePeriodName: string | null = null;
 
-  private eraBackgroundColors: { [key: string]: string } = { // Added
-    'p1': '#f0e6d2', // Ancient Times - light parchment
-    'p2': '#e0e0e0', // Middle Ages - light stone gray
-    'p3': '#d4e8f0'  // Modern Era - light sky blue
+  private eraBackgroundColors: { [key: string]: string } = {
+    'p1': '#f0e6d2', 
+    'p2': '#e0e0e0', 
+    'p3': '#d4e8f0'
   };
-  public activeEraBackground: string | null = null; // Added
+  public activeEraBackground: string | null = null;
 
-  constructor(private timelineService: TimelineService) { }
+  constructor(
+    private timelineService: TimelineService,
+    @Inject(PLATFORM_ID) private platformId: Object // Added PLATFORM_ID injection
+  ) { }
 
   ngOnInit(): void {
     this.timelineService.getTimelineData().subscribe((data: TimelineData) => {
@@ -44,14 +47,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy { // 
   }
 
   ngAfterViewInit(): void {
-    this.initObserver();
-    this.eventItemRefs.changes.subscribe(() => {
-      this.disconnectObserver();
+    if (isPlatformBrowser(this.platformId)) { // Guard added
       this.initObserver();
-    });
+      // It's important that eventItemRefs.changes subscription is also guarded
+      if (this.eventItemRefs) { // Check if eventItemRefs is available
+          this.eventItemRefs.changes.subscribe(() => {
+              this.disconnectObserver();
+              this.initObserver(); 
+          });
+      }
+    }
   }
 
   private initObserver(): void {
+    // No need for isPlatformBrowser check here as it's called from a guarded block
     const options = {
       root: document.querySelector('.events-container'),
       rootMargin: '0px',
