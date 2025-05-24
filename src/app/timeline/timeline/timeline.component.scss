@@ -6,6 +6,7 @@
   --secondary-text-color: #6c5f5b; // A slightly lighter, muted brown for secondary text
   --accent-color-gold: #d4af37; // gold
   --card-background-color: #fffef7; // lighter parchment/off-white
+  --card-background-color-rgb: 255, 254, 247; // RGB version for opacity
   --border-color: #c8bba8; // muted gold/brown for borders
   --overlay-background: rgba(58, 44, 20, 0.7); // brownish overlay
   --shadow-color: rgba(58, 44, 20, 0.15); // Shadow color to match the theme
@@ -53,7 +54,7 @@
   justify-content: center;
   padding: 15px 5px; // Slightly more padding
   border-bottom: 1px solid var(--border-color);
-  background-color: rgba(255, 254, 247, 0.5); // Semi-transparent card background for container
+  background-color: rgba(var(--card-background-color-rgb), 0.5); // Semi-transparent card background for container
   flex-shrink: 0;
 }
 
@@ -69,11 +70,63 @@
   box-shadow: 0 1px 3px var(--shadow-color);
   // background-color is set by [style.backgroundColor]="period.color" in HTML
   border: 1px solid var(--accent-color-gold); // Gold border for all periods
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out; // Added transition
 
   h3 {
     margin: 0;
     font-size: inherit; // Inherits 1em
     font-weight: bold; // Make period names stand out
+  }
+
+  // Style for Active Period
+  &.active-period {
+    box-shadow: 0 0 10px var(--accent-color-gold); // Gold glow
+    transform: translateY(-2px) scale(1.02); // Slight lift and scale
+    font-weight: bold; // Ensure text stands out (already applied to h3, but good for the item itself)
+    border-color: var(--accent-color-gold); // Make sure border is prominent (already default, but reinforces)
+    // To make the background of the active period slightly more opaque if it uses transparency:
+    // background-color: var(--period-color-opaque) or adjust opacity if period.color is rgba
+  }
+}
+
+// Filter Information Styles
+.filter-info-container {
+  padding: 15px 20px;
+  margin: 15px auto; // Centered with a bit more margin
+  background-color: rgba(var(--card-background-color-rgb), 0.7); // Use RGB for opacity
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  text-align: center;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 1px 3px var(--shadow-color);
+
+  h2 {
+    font-family: var(--primary-font);
+    color: var(--event-title-color);
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+}
+
+.clear-filter-button {
+  font-family: var(--primary-font);
+  background-color: var(--accent-color-gold);
+  color: #fff; // White text on gold for contrast
+  border: 1px solid darken(var(--accent-color-gold), 10%); // SCSS darken function won't work directly with CSS var
+                                                        // Using a slightly darker fixed value or another var if available
+                                                        // For simplicity, let's assume a manual darker shade or same border
+  border-color: #b89b2e; // Darker gold (manual alternative to SCSS darken)
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #c7a533; // Darker gold (manual alternative to SCSS darken)
+    transform: translateY(-1px);
   }
 }
 
@@ -87,6 +140,18 @@
   overflow-x: hidden;
   flex-grow: 1;
   width: 100%;
+}
+
+.no-events-message {
+  text-align: center;
+  padding: 30px 20px;
+  font-family: var(--primary-font);
+  font-size: 1.1em;
+  color: var(--secondary-text-color);
+  margin-top: 20px;
+  p {
+    margin: 0;
+  }
 }
 
 .event-item {
