@@ -22,6 +22,36 @@
   }
 }
 
+.modal-nav-button {
+  position: fixed; // Fixed to the viewport, within the .event-detail-view overlay
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.3); // Semi-transparent background
+  color: white;
+  border: none;
+  border-radius: 50%; // Circular buttons
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 40px; // Center the arrow
+  text-align: center;
+  cursor: pointer;
+  z-index: 1001; // Ensure they are above the content area if content scrolls
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  &.prev {
+    left: 20px; // Adjust positioning from edge
+  }
+
+  &.next {
+    right: 20px; // Adjust positioning from edge
+  }
+}
+
 // General styles
 .timeline-container {
   font-family: var(--primary-font);
@@ -34,6 +64,7 @@
   flex-direction: column;
   min-height: 100vh;
   box-sizing: border-box;
+  transition: background-color 0.8s ease-in-out; // Add this line
 }
 
 // 6. Chronological Bar (.chronological-bar)
@@ -172,14 +203,29 @@
   padding: 20px; // More padding
   margin: 15px; // More margin
   width: 90%;
-  max-width: 520px; // Slightly larger max-width
-  box-shadow: 0 2px 5px var(--shadow-color); // Updated shadow
+  max-width: 520px;
+  box-shadow: 0 2px 5px var(--shadow-color);
   cursor: pointer;
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+  // Initial state for IntersectionObserver animation
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.2s ease-in-out; // Keep existing shadow transition for hover
 
+  // Hover state - should still work over the reveal
   &:hover {
-    box-shadow: 0 4px 10px var(--shadow-color); // Enhanced hover shadow
-    transform: translateY(-5px) scale(1.03); // Added scale and adjusted translateY
+    box-shadow: 0 4px 10px var(--shadow-color);
+    // If translateY is part of the reveal, hover should ideally not fight it,
+    // but a slight lift combined with scale is usually fine.
+    // The reveal sets translateY(0), so this hover will apply after it's in view.
+    transform: translateY(-5px) scale(1.03);
+  }
+
+  // Visible state for IntersectionObserver
+  &.in-view {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .event-image {
