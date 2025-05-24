@@ -263,66 +263,90 @@
   }
 
   .detail-content-area {
-    font-family: 'Poppins', sans-serif; // New font
-    background-color: #ffffff; // Plain white
-    border: none; // Remove old border
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175); // Modern shadow
-    border-radius: 8px; // Rounded corners
-    padding: 2rem; // Scalable padding
-    width: 90%; // Responsive width
-    max-width: 650px; // Max width for readability
-    max-height: 85vh; // Max height to keep it within viewport
-    overflow-y: auto; // Scroll for content overflow
-    position: relative; // For absolute positioning of close button
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    border-radius: 8px;
+    padding: 1.5rem; // Adjusted padding
+    width: 90%;
+    max-width: 520px; // Adjusted max-width
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex; // Added for flex column layout
+    flex-direction: column; // Added for flex column layout
+    align-items: center; // Center content by default
+
+    .modal-header-image-container {
+      width: calc(100% + 3rem); // Matches padding * 2
+      margin: -1.5rem -1.5rem 1.5rem -1.5rem; // Negative margins
+      height: 220px;
+      overflow: hidden;
+      border-radius: 8px 8px 0 0; // Top corners rounded
+    }
+
+    .modal-header-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
     h2 {
-      font-family: 'Poppins', sans-serif;
-      color: #333333; // Dark gray title
-      font-size: 1.8rem;
+      font-family: 'Poppins', sans-serif; // Should inherit, but explicit for clarity
+      color: #333333;
+      font-size: 1.7rem; // Adjusted font size
       font-weight: 600;
-      text-align: left; // Align left
-      border-bottom: 1px solid #eeeeee; // Light separator
+      text-align: center; // Centered text
+      border-bottom: 1px solid #eeeeee;
       padding-bottom: 0.75rem;
-      margin-top: 0; // Ensure no extra space at top
-      margin-bottom: 1.25rem;
+      margin-top: 0; // After image, so 0 is fine
+      margin-bottom: 0.75rem; // Adjusted margin
+      width: 100%; // Ensure border-bottom spans width
     }
 
     .event-detail-date {
-      font-family: 'Poppins', sans-serif;
-      color: #666666; // Medium gray
+      font-family: 'Poppins', sans-serif; // Should inherit
+      color: #777; // Adjusted color
       font-size: 0.9rem;
-      text-align: left; // Align left
+      text-align: center; // Centered text
       margin-bottom: 1.5rem;
-      font-style: normal; // Remove previous italic
+      font-style: normal;
     }
 
     .event-detail-description {
-      font-family: 'Poppins', sans-serif;
-      color: #555555; // Standard text color
+      font-family: 'Poppins', sans-serif; // Should inherit
+      color: #555555;
       font-size: 1rem;
       line-height: 1.7;
-      margin-bottom: 1.5rem; // Consistent margin
+      margin-bottom: 1.5rem;
+      text-align: left; // Keep description left-aligned for readability
+      width: 100%; // Ensure it takes full width for alignment
     }
 
     .sources-section, .media-section {
-      margin-top: 1.5rem; // Consistent margin
+      width: 100%; // Ensure these sections take full width for their content alignment
+      margin-top: 1.5rem;
       margin-bottom: 1.5rem;
       h4 {
         font-family: 'Poppins', sans-serif;
         color: #444444;
         font-size: 1.1rem;
         font-weight: 600;
-        border-bottom: 1px solid #f0f0f0; // Lighter separator
+        border-bottom: 1px solid #f0f0f0;
         padding-bottom: 0.5rem;
         margin-bottom: 0.75rem;
+        text-align: left; // Ensure section titles are left-aligned
       }
       ul {
-        list-style: disc; // Standard disc
-        padding-left: 1.25rem; // Standard indent
+        list-style: disc;
+        padding-left: 1.25rem;
         li {
-          margin-bottom: 0.5rem; // Spacing for list items
+          margin-bottom: 0.5rem;
+          text-align: left; // Ensure list items are left-aligned
           a {
-            color: #007bff; // Standard blue link
+            color: #007bff;
             text-decoration: none;
             &:hover {
               text-decoration: underline;
@@ -334,44 +358,44 @@
 
     .media-item {
       margin-bottom: 1.5rem;
-      text-align: left; // Align media items left
+      text-align: left;
       img, video, audio {
         max-width: 100%;
         height: auto;
         display: block;
-        margin-bottom: 0.5rem; // Space below media
-        border-radius: 4px; // Slightly rounded corners for media
-        border: 1px solid #eeeeee; // Light border for media
+        margin-bottom: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid #eeeeee;
       }
-      video { max-height: 350px; } // Adjusted max height
+      video { max-height: 350px; }
       .media-item-description {
         font-family: 'Poppins', sans-serif;
         font-size: 0.85rem;
-        color: #777777; // Lighter gray for description
+        color: #777777;
         text-align: left;
         margin-top: 0.25rem;
-        font-style: normal; // Remove previous italic
+        font-style: normal;
       }
     }
   }
 
-  .close-button {
-    font-family: 'Arial', sans-serif; // Clearer 'X'
+  .close-button { // Position adjusted relative to new padding
+    font-family: 'Arial', sans-serif;
     font-size: 1.5rem;
-    color: #aaaaaa; // Light gray 'X'
+    color: #aaaaaa;
     font-weight: bold;
     background: transparent;
     border: none;
-    padding: 0.5rem;
+    padding: 0.5rem; // Keep padding on button for click area
     line-height: 1;
     position: absolute;
-    top: 1rem; // Position relative to content area padding
-    right: 1rem;
+    top: 0.75rem; // Adjusted for 1.5rem parent padding (0.75rem + 0.5rem button padding ~= 1.25rem from edge)
+    right: 0.75rem; // Adjusted for 1.5rem parent padding
     cursor: pointer;
     transition: color 0.2s ease;
 
     &:hover {
-      color: #333333; // Darker on hover
+      color: #333333;
     }
   }
 }

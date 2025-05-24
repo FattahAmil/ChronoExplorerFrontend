@@ -45,34 +45,41 @@
 
   <!-- Detail View (Conditional Display) -->
   <div class="event-detail-view" *ngIf="selectedEvent" [class.visible]="selectedEvent">
-    <button (click)="clearSelectedEvent()" class="close-button">Close</button>
-    <h2>{{ selectedEvent.title }}</h2>
-    <p class="event-detail-date">{{ selectedEvent.date | date:'fullDate' }}</p> <!-- Using fullDate for more detail -->
-    <p class="event-detail-description">{{ selectedEvent.detailedDescription }}</p>
+    <div class="detail-content-area"> <!-- This div wraps all content including the close button -->
+      <button (click)="clearSelectedEvent()" class="close-button>×</button> <!-- Changed text to '×' -->
 
-    <div *ngIf="selectedEvent.sources && selectedEvent.sources.length > 0" class="sources-section">
-      <h4>Sources:</h4>
-      <ul>
-        <li *ngFor="let source of selectedEvent.sources">
-          <a *ngIf="source.url" [href]="source.url" target="_blank">{{ source.name }}</a>
-          <span *ngIf="!source.url">{{ source.name }}</span>
-        </li>
-      </ul>
-    </div>
-
-    <div *ngIf="selectedEvent.media && selectedEvent.media.length > 0" class="media-section">
-      <h4>Media:</h4>
-      <div *ngFor="let mediaItem of selectedEvent.media" class="media-item">
-        <img *ngIf="mediaItem.type === 'image'" [src]="mediaItem.url" [alt]="mediaItem.description || selectedEvent.title" style="max-width: 200px; margin: 5px;">
-        <video *ngIf="mediaItem.type === 'video'" controls [src]="mediaItem.url" style="max-width: 300px; margin: 5px;">
-          Your browser does not support the video tag.
-        </video>
-        <audio *ngIf="mediaItem.type === 'audio'" controls [src]="mediaItem.url" style="margin: 5px;">
-          Your browser does not support the audio element.
-        </audio>
-        <p *ngIf="mediaItem.description" class="media-item-description">{{ mediaItem.description }}</p>
+      <div *ngIf="selectedEvent.imageUrl" class="modal-header-image-container">
+        <img [src]="selectedEvent.imageUrl" [alt]="selectedEvent.title" class="modal-header-image">
       </div>
-    </div>
+
+      <h2>{{ selectedEvent.title }}</h2>
+      <p class="event-detail-date">{{ selectedEvent.date | date:'fullDate' }}</p>
+      <p class="event-detail-description">{{ selectedEvent.detailedDescription }}</p>
+
+      <div *ngIf="selectedEvent.sources && selectedEvent.sources.length > 0" class="sources-section">
+        <h4>Sources:</h4>
+        <ul>
+          <li *ngFor="let source of selectedEvent.sources">
+            <a *ngIf="source.url" [href]="source.url" target="_blank">{{ source.name }}</a>
+            <span *ngIf="!source.url">{{ source.name }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="selectedEvent.media && selectedEvent.media.length > 0" class="media-section">
+        <h4>Media:</h4>
+        <div *ngFor="let mediaItem of selectedEvent.media" class="media-item">
+          <img *ngIf="mediaItem.type === 'image' && mediaItem.url !== selectedEvent.imageUrl" [src]="mediaItem.url" [alt]="mediaItem.description || selectedEvent.title" style="max-width: 200px; margin: 5px;">
+          <video *ngIf="mediaItem.type === 'video'" controls [src]="mediaItem.url" style="max-width: 300px; margin: 5px;">
+            Your browser does not support the video tag.
+          </video>
+          <audio *ngIf="mediaItem.type === 'audio'" controls [src]="mediaItem.url" style="margin: 5px;">
+            Your browser does not support the audio element.
+          </audio>
+          <p *ngIf="mediaItem.description" class="media-item-description">{{ mediaItem.description }}</p>
+        </div>
+      </div>
+    </div> <!-- End of detail-content-area -->
   </div>
 
 </div>
