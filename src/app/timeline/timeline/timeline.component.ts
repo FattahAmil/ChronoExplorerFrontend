@@ -14,10 +14,10 @@ import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('eventItemRef') eventItemRefs!: QueryList<ElementRef>;
-  @ViewChild('eventsContainerRef') eventsContainerRef!: ElementRef<HTMLDivElement>; // Added
-  @ViewChild('scrollThumbRef') scrollThumbRef!: ElementRef<HTMLDivElement>; // Added
+  @ViewChild('eventsContainerRef') eventsContainerRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollDotRef') scrollDotRef!: ElementRef<HTMLDivElement>; // Added
   private observer!: IntersectionObserver;
-  private scrollListenerFn!: () => void; // Added
+  private scrollListenerFn!: () => void;
 
   periods: HistoricalPeriod[] = [];
   events: HistoricalEvent[] = [];
@@ -65,31 +65,36 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           });
       }
 
-      // Scroll Indicator Logic (as per subtask description)
+      // Scroll Indicator Logic (now for the dot)
       const eventsContainerEl = this.eventsContainerRef?.nativeElement;
-      const scrollThumbEl = this.scrollThumbRef?.nativeElement;
 
-      if (eventsContainerEl && scrollThumbEl) {
+      if (eventsContainerEl) { 
+        // Initial position update
+        this.updateScrollDotPosition(eventsContainerEl); 
+
         this.scrollListenerFn = this.renderer.listen(eventsContainerEl, 'scroll', () => {
-          const scrollableWidth = eventsContainerEl.scrollWidth - eventsContainerEl.clientWidth;
-          if (scrollableWidth > 0) {
-            const scrollPercentage = (eventsContainerEl.scrollLeft / scrollableWidth) * 100;
-            this.renderer.setStyle(scrollThumbEl, 'width', scrollPercentage + '%');
-          } else {
-            this.renderer.setStyle(scrollThumbEl, 'width', '0%'); // No scroll needed, hide/reset thumb
-          }
+          this.updateScrollDotPosition(eventsContainerEl);
         });
-        // Initial state of the thumb (optional, could be 0% if nothing is scrolled initially)
-        // For robustness, check initial scroll state:
-        const initialScrollableWidth = eventsContainerEl.scrollWidth - eventsContainerEl.clientWidth;
-        if (initialScrollableWidth > 0) {
-            const initialScrollPercentage = (eventsContainerEl.scrollLeft / initialScrollableWidth) * 100;
-            this.renderer.setStyle(scrollThumbEl, 'width', initialScrollPercentage + '%');
-        } else {
-            this.renderer.setStyle(scrollThumbEl, 'width', '0%');
-        }
       }
     }
+  }
+
+  private updateScrollDotPosition(containerEl: HTMLDivElement): void { // Added method
+    if (!this.scrollDotRef || !this.scrollDotRef.nativeElement) {
+      return; // Dot element not ready yet
+    }
+
+    const scrollableWidth = containerEl.scrollWidth - containerEl.clientWidth;
+    if (scrollableWidth <= 0) { // No scrollbar, or not scrollable
+      this.renderer.setStyle(this.scrollDotRef.nativeElement, 'left', '0%');
+      return;
+    }
+    
+    let scrollPercentage = (containerEl.scrollLeft / scrollableWidth) * 100;
+    // Clamp percentage between 0 and 100 to avoid over/underflow due to bounce effects on some browsers
+    scrollPercentage = Math.max(0, Math.min(100, scrollPercentage)); 
+
+    this.renderer.setStyle(this.scrollDotRef.nativeElement, 'left', scrollPercentage + '%');
   }
 
   private initObserver(): void {

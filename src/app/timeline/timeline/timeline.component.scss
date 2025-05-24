@@ -201,41 +201,44 @@
   overflow-x: hidden;
   flex-grow: 1;
   width: 100%;
-  position: relative; // Needed for absolute positioning of scroll indicator
+  position: relative; // Confirmed: Needed for absolute positioning of scroll indicator
 }
 
-// Scroll Indicator Styles (Desktop)
-.scroll-indicator-track-wrapper {
+// New Central Track and Dot Scroll Indicator Styles (Desktop)
+.central-timeline-track-container {
   display: none; // Hidden by default (mobile)
-  @media (min-width: 768px) { // Show only on desktop
+
+  @media (min-width: 768px) { // Show only on desktop where horizontal scroll is active
     display: block;
-    position: absolute; // Position at the bottom of the events-container
-    bottom: 5px;      // Stick to bottom with a small offset
-    left: 0;
-    width: 100%;
-    padding: 0 20px; // Align with events-container padding if any (adjust if events-container padding changes)
-    box-sizing: border-box;
-    height: 10px;     // Height of the track area
-    z-index: 5;       // Ensure it's above event content if they overlap
+    position: absolute;
+    top: 50%; // Vertically center the track
+    left: 10px; // Start after a bit of padding
+    right: 10px; // End before a bit of padding
+    transform: translateY(-50%);
+    z-index: 1; // Behind event cards
+    pointer-events: none; // So it doesn't interfere with mouse events on cards
   }
 }
 
-.scroll-indicator-track {
+.central-timeline-track {
   width: 100%;
-  height: 4px; // Thickness of the track
-  background-color: rgba(0, 0, 0, 0.1); // Light track color
-  border-radius: 2px;
-  position: relative; 
-  margin-top: 3px; // Space from bottom edge or content
+  height: 2px;
+  background-color: var(--border-color); // Use a theme color (e.g., muted gold/brown)
+  position: relative; // For the dot to be positioned on
 }
 
-.scroll-indicator-thumb {
-  height: 100%; // Same thickness as track
-  background-color: var(--accent-color-gold); // Use a theme color
-  border-radius: 2px;
-  width: 0%; // Initial width, will be set by TS
-  transition: width 0.05s linear; // Smooth out width changes slightly
+.central-timeline-dot {
+  position: absolute;
+  top: 50%; // Center dot on the track line
+  width: 10px; // Size of the dot
+  height: 10px; // Size of the dot
+  background-color: var(--accent-color-gold); // Use a theme accent color
+  border-radius: 50%;
+  transform: translate(-50%, -50%); // Center the dot element on its 'left' position
+  left: 0%; // Initial position, will be updated by TypeScript
+  transition: left 0.05s linear; // Smooth movement, adjust timing if needed
 }
+// End of New Central Track and Dot Styles
 
 .no-events-message {
   text-align: center;
@@ -260,6 +263,8 @@
   max-width: 520px;
   box-shadow: 0 2px 5px var(--shadow-color);
   cursor: pointer;
+  position: relative; // Ensure it can have a z-index
+  z-index: 2;       // To be above the .central-timeline-track-container
   // Initial state for IntersectionObserver animation
   opacity: 0;
   transform: translateY(40px);
