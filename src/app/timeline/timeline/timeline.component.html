@@ -46,7 +46,7 @@
   <!-- Detail View (Conditional Display) -->
   <div class="event-detail-view" *ngIf="selectedEvent" [class.visible]="selectedEvent">
     <div class="detail-content-area"> <!-- This div wraps all content including the close button -->
-      <button (click)="clearSelectedEvent()" class="close-button>×</button> <!-- Changed text to '×' -->
+      <button (click)="clearSelectedEvent()" class="close-button">×</button> <!-- Changed text to '×' -->
 
       <div *ngIf="selectedEvent.imageUrl" class="modal-header-image-container">
         <img [src]="selectedEvent.imageUrl" [alt]="selectedEvent.title" class="modal-header-image">
