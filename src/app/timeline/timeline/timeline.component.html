@@ -10,20 +10,34 @@
 
   <!-- Periods Display -->
   <div class="periods-container">
-    <div class="period-item" *ngFor="let period of periods" [style.backgroundColor]="period.color">
+    <div class="period-item"
+         *ngFor="let period of periods"
+         [style.backgroundColor]="period.color"
+         (click)="selectPeriod(period)"
+         [class.active-period]="period.id === selectedPeriodId">
       <h3>{{ period.name }} ({{ period.startDate | date:'yyyy' }} - {{ period.endDate | date:'yyyy' }})</h3>
     </div>
   </div>
 
+  <!-- Active Filter Information -->
+  <div class="filter-info-container" *ngIf="activePeriodName">
+    <h2>Events for: {{ activePeriodName }}</h2>
+    <button (click)="clearPeriodFilter()" class="clear-filter-button">Show All Events</button>
+  </div>
+
   <!-- Events Display -->
   <div class="events-container">
-    <div class="event-item" *ngFor="let event of events" (click)="selectEvent(event)">
+    <div class="event-item" *ngFor="let event of filteredEvents" (click)="selectEvent(event)">
       <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title" class="event-image">
       <div class="event-info">
-        <p class="event-date">{{ event.date | date:'mediumDate' }}</p> <!-- Using mediumDate as per example -->
+        <p class="event-date">{{ event.date | date:'mediumDate' }}</p>
         <h4 class="event-title">{{ event.title }}</h4>
         <p class="event-summary">{{ event.summary }}</p>
       </div>
+    </div>
+    <!-- Handle Empty Filtered Events -->
+    <div *ngIf="filteredEvents.length === 0 && activePeriodName" class="no-events-message">
+        <p>No events found for {{ activePeriodName }}.</p>
     </div>
   </div>
 
