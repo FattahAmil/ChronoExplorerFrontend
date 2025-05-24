@@ -14,10 +14,10 @@ import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('eventItemRef') eventItemRefs!: QueryList<ElementRef>;
-  @ViewChild('eventsContainerRef') eventsContainerRef!: ElementRef<HTMLDivElement>;
-  @ViewChild('scrollDotRef') scrollDotRef!: ElementRef<HTMLDivElement>; // Added
+  // Removed @ViewChild for eventsContainerRef
+  // Removed @ViewChild for scrollDotRef
   private observer!: IntersectionObserver;
-  private scrollListenerFn!: () => void;
+  // Removed scrollListenerFn
 
   periods: HistoricalPeriod[] = [];
   events: HistoricalEvent[] = [];
@@ -65,37 +65,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           });
       }
 
-      // Scroll Indicator Logic (now for the dot)
-      const eventsContainerEl = this.eventsContainerRef?.nativeElement;
-
-      if (eventsContainerEl) { 
-        // Initial position update
-        this.updateScrollDotPosition(eventsContainerEl); 
-
-        this.scrollListenerFn = this.renderer.listen(eventsContainerEl, 'scroll', () => {
-          this.updateScrollDotPosition(eventsContainerEl);
-        });
-      }
+      // Removed Scroll Indicator Logic
     }
   }
 
-  private updateScrollDotPosition(containerEl: HTMLDivElement): void { // Added method
-    if (!this.scrollDotRef || !this.scrollDotRef.nativeElement) {
-      return; // Dot element not ready yet
-    }
-
-    const scrollableWidth = containerEl.scrollWidth - containerEl.clientWidth;
-    if (scrollableWidth <= 0) { // No scrollbar, or not scrollable
-      this.renderer.setStyle(this.scrollDotRef.nativeElement, 'left', '0%');
-      return;
-    }
-    
-    let scrollPercentage = (containerEl.scrollLeft / scrollableWidth) * 100;
-    // Clamp percentage between 0 and 100 to avoid over/underflow due to bounce effects on some browsers
-    scrollPercentage = Math.max(0, Math.min(100, scrollPercentage)); 
-
-    this.renderer.setStyle(this.scrollDotRef.nativeElement, 'left', scrollPercentage + '%');
-  }
+  // Removed updateScrollDotPosition method
 
   private initObserver(): void {
     // No need for isPlatformBrowser check here as it's called from a guarded block
@@ -132,10 +106,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.disconnectObserver(); 
-    if (this.scrollListenerFn && isPlatformBrowser(this.platformId)) { 
-      this.scrollListenerFn(); 
-    }
-    if (this.filterAnimationTimeout) { // Added
+    // Removed scrollListenerFn call
+    if (this.filterAnimationTimeout) {
       clearTimeout(this.filterAnimationTimeout);
     }
   }
