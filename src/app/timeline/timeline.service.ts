@@ -19,6 +19,7 @@ export class TimelineService {
         date: '0070-01-01',
         title: 'Colosseum Construction Begins',
         summary: 'Construction of the Flavian Amphitheatre (Colosseum) starts in Rome.',
+        imageUrl: 'https://via.placeholder.com/300x200.png?text=Colosseum', // Added
         periodId: 'p1',
         detailedDescription: 'The Colosseum, an iconic symbol of Imperial Rome, was built by the Flavian emperors as a gift to the Roman people. Its construction began under Vespasian in AD 72 and was completed in AD 80 under his successor and heir, Titus.',
         sources: [{ name: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Colosseum' }],
@@ -38,6 +39,7 @@ export class TimelineService {
         date: '1066-10-14',
         title: 'Battle of Hastings',
         summary: 'The Norman forces of William the Conqueror defeat the English forces of King Harold Godwinson.',
+        imageUrl: 'https://via.placeholder.com/300x200.png?text=Battle+of+Hastings', // Added
         periodId: 'p2',
         groupIds: ['g1'],
         detailedDescription: 'The Battle of Hastings was fought on 14 October 1066 between the Norman-French army of William, Duke of Normandy, and an English army under the Anglo-Saxon King Harold Godwinson, beginning the Norman conquest of England.',
