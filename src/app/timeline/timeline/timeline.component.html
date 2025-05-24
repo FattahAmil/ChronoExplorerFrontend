@@ -44,7 +44,7 @@
   <!-- Thematic Grouping: No explicit rendering in this step -->
 
   <!-- Detail View (Conditional Display) -->
-  <div class="event-detail-view" *ngIf="selectedEvent">
+  <div class="event-detail-view" *ngIf="selectedEvent" [class.visible]="selectedEvent">
     <button (click)="clearSelectedEvent()" class="close-button">Close</button>
     <h2>{{ selectedEvent.title }}</h2>
     <p class="event-detail-date">{{ selectedEvent.date | date:'fullDate' }}</p> <!-- Using fullDate for more detail -->
