@@ -27,6 +27,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedPeriodId: string | number | null = null;
   public activePeriodName: string | null = null;
 
+  public isFiltering: boolean = false; // Added
+  public filterProgressBarWidth: number = 0; // Added
+  private filterAnimationTimeout: any; // Added
+
   private eraBackgroundColors: { [key: string]: string } = {
     'p1': '#f0e6d2', 
     'p2': '#e0e0e0', 
@@ -37,7 +41,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private timelineService: TimelineService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private renderer: Renderer2 // Added
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -122,28 +126,60 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.disconnectObserver(); // Existing IntersectionObserver cleanup
-    if (this.scrollListenerFn && isPlatformBrowser(this.platformId)) { // Guard listener removal
-      this.scrollListenerFn(); // Remove the scroll event listener
-      // If window resize listener was added, remove it too
-      // window.removeEventListener('resize', updateThumbWidth); // Needs updateThumbWidth to be accessible
+    this.disconnectObserver(); 
+    if (this.scrollListenerFn && isPlatformBrowser(this.platformId)) { 
+      this.scrollListenerFn(); 
+    }
+    if (this.filterAnimationTimeout) { // Added
+      clearTimeout(this.filterAnimationTimeout);
     }
   }
 
   selectPeriod(period: HistoricalPeriod): void {
+    // Clear any ongoing filter animation timeout
+    if (this.filterAnimationTimeout) {
+      clearTimeout(this.filterAnimationTimeout);
+    }
+
+    this.activeEraBackground = this.eraBackgroundColors[String(period.id)] || null; // Keep existing bg change
+
     if (this.selectedPeriodId === period.id) {
-      this.clearPeriodFilter(); // This will also reset activeEraBackground
+      // If clicking the same period, clear filter (which also sets isFiltering = false)
+      this.clearPeriodFilter();
     } else {
       this.selectedPeriodId = period.id;
       this.activePeriodName = period.name;
-      this.activeEraBackground = this.eraBackgroundColors[String(period.id)] || null; // Set specific color or null
+
+      this.isFiltering = true;      // Show the progress bar track
+      this.filterProgressBarWidth = 0; // Reset bar width before animation
+
+      // Use a short timeout to allow the DOM to update and render the bar at 0% width
+      // before transitioning to 100%.
+      setTimeout(() => {
+        this.filterProgressBarWidth = 100; // Trigger animation to 100%
+      }, 20); // 20ms should be enough for DOM update
+
+      // Set a timeout to hide the progress bar after animation + some delay
+      // Duration should be longer than the CSS transition (0.4s = 400ms)
+      this.filterAnimationTimeout = setTimeout(() => {
+        this.isFiltering = false;
+        // Optionally reset width for next time, though *ngIf handles initial state
+        // this.filterProgressBarWidth = 0; 
+      }, 700); // e.g., 400ms for animation + 300ms visible at 100%
     }
   }
 
   clearPeriodFilter(): void {
     this.selectedPeriodId = null;
     this.activePeriodName = null;
-    this.activeEraBackground = null; // Reset to default
+    this.activeEraBackground = null;
+
+    // Clear any ongoing filter animation and hide the bar
+    if (this.filterAnimationTimeout) {
+      clearTimeout(this.filterAnimationTimeout);
+    }
+    this.isFiltering = false;
+    this.filterProgressBarWidth = 0;
   }
 
   get filteredEvents(): HistoricalEvent[] {
