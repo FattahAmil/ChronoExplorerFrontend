@@ -14,7 +14,7 @@ import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('eventItemRef') eventItemRefs!: QueryList<ElementRef>;
-  // Removed @ViewChild for eventsContainerRef
+  @ViewChild('eventsContainerRef') eventsContainerRef!: ElementRef<HTMLDivElement>; // Re-added
   // Removed @ViewChild for scrollDotRef
   private observer!: IntersectionObserver;
   // Removed scrollListenerFn
@@ -74,7 +74,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private initObserver(): void {
     // No need for isPlatformBrowser check here as it's called from a guarded block
     const options = {
-      root: document.querySelector('.events-container'),
+      root: this.eventsContainerRef.nativeElement, // Changed from document.querySelector
       rootMargin: '0px',
       threshold: 0.1
     };
@@ -82,6 +82,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
+          console.log('Event item IS intersecting:', entry.target); // DEBUG LOG
           entry.target.classList.add('in-view');
           observer.unobserve(entry.target);
         }
