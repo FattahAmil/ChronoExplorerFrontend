@@ -82,7 +82,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          console.log('Event item IS intersecting:', entry.target); // DEBUG LOG
+          // The console.log was here
           entry.target.classList.add('in-view');
           observer.unobserve(entry.target);
         }

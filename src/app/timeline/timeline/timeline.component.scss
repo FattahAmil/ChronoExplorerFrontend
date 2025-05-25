@@ -248,16 +248,8 @@
 
   // Visible state for IntersectionObserver
   &.in-view {
-    opacity: 1 !important; // Ensure opacity is forced for debug
-    transform: translateY(0) !important; // Ensure transform is forced for debug
-    border: 5px solid limegreen !important; 
-    background-color: rgba(0, 255, 0, 0.1) !important; // Light green tint
-
-    // For even more aggressive debugging, ensure content is visible:
-    // .event-title, .event-date, .event-summary {
-    //   color: black !important;
-    //   background-color: yellow !important;
-    // }
+    opacity: 1; 
+    transform: translateY(0);
   }
 
   .event-image {
