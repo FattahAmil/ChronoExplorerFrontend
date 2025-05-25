@@ -3,11 +3,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 // Removed Angular Animation imports
 import { TimelineService } from '../timeline.service';
 import { TimelineData, HistoricalPeriod, HistoricalEvent, ThematicGroup } from '../timeline.model';
+import { HeaderComponent } from "../../shared/header/header.component";
 
 @Component({
   selector: 'app-timeline',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
   // Removed animations metadata
